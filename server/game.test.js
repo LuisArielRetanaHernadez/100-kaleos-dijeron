@@ -50,3 +50,17 @@ test('avanza automáticamente a la siguiente sección al terminar sus preguntas'
   assert.equal(game.round, 0)
   assert.equal(publicGame(game).hostAnswers[0].text, 'La Pasión de Cristo')
 })
+
+test('usa las rondas dinámicas al mostrar y avanzar el juego', () => {
+  const customSections = [
+    { title: 'Ronda editable', shortTitle: 'Editable', questions: [{ question: 'Pregunta nueva', multiplier: 3, answers: [{ text: 'Respuesta nueva', points: 7 }] }] },
+    { title: 'Segunda ronda', shortTitle: 'Segunda', questions: [{ question: 'Otra pregunta', multiplier: 1, answers: [{ text: 'Otra respuesta', points: 5 }] }] },
+  ]
+  const game = createGame()
+  assert.equal(publicGame(game, customSections).question, 'Pregunta nueva')
+  applyAction(game, 'reveal', { index: 0 }, customSections)
+  assert.equal(game.bank, 21)
+  applyAction(game, 'next-round', {}, customSections)
+  assert.equal(game.section, 1)
+  assert.equal(publicGame(game, customSections).question, 'Otra pregunta')
+})

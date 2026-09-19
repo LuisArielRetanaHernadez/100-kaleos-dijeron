@@ -24,4 +24,4 @@ npm run build
 npm start
 ```
 
-El estado completo de la partida se guarda en la colección `game_state` de MongoDB. Puedes cambiar los nombres de los equipos haciendo clic sobre ellos. El panel inferior permite seleccionar secciones, revelar respuestas, marcar errores, cambiar el turno, entregar el pozo y avanzar de pregunta.
+El estado completo de la partida se guarda en la colección `game_state` y las rondas editables en `rounds`. Desde **Administrar rondas** puedes crear, consultar, editar y eliminar rondas, preguntas y respuestas. El panel inferior también permite revelar respuestas, marcar errores, cambiar el turno, entregar el pozo y avanzar de pregunta.

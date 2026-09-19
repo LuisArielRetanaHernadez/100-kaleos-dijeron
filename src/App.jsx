@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import RoundManager from './RoundManager.jsx'
 
 const api = {
   get: () => fetch('/api/game').then((response) => response.json()),
@@ -75,7 +76,7 @@ function Answer({ answer, position }) {
   )
 }
 
-function HostPanel({ game, onAction, onReset }) {
+function HostPanel({ game, onAction, onReset, onManage }) {
   const [open, setOpen] = useState(true)
   return (
     <aside className={`host-panel ${open ? 'open' : ''}`}>
@@ -110,6 +111,7 @@ function HostPanel({ game, onAction, onReset }) {
             <select aria-label="Seleccionar sección" value={game.section} onChange={(event) => onAction('select-section', { section: Number(event.target.value) })}>
               {game.sections.map((section, index) => <option key={section.title} value={index}>{section.shortTitle}</option>)}
             </select>
+            <button className="manage-rounds" onClick={onManage}>⚙ Administrar rondas</button>
             <div>
               <button className="next" onClick={() => onAction('next-round')}>
                 {game.isLastQuestion ? (game.isLastSection ? 'Ver ganador' : 'Siguiente sección →') : 'Siguiente pregunta →'}
@@ -126,6 +128,7 @@ function HostPanel({ game, onAction, onReset }) {
 export default function App() {
   const [game, setGame] = useState(null)
   const [error, setError] = useState('')
+  const [managerOpen, setManagerOpen] = useState(false)
   const playSound = useSounds()
   const previousEvent = useRef(0)
 
@@ -171,7 +174,11 @@ export default function App() {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <div className="brand"><span className="brand-100">100</span><span>KALEOS<br /><b>DIJERON</b></span></div>
+        <div className="brand">
+          <span className="brand-100">100</span>
+          <div className="brand-wordmark"><b>MEXICANOS</b><span>CRISTIANOS</span><strong>DIJERON</strong></div>
+          <span className="brand-cross">✝</span>
+        </div>
         <div className="round-info">
           <span>{game.sectionTitle}</span>
           <small>PREGUNTA {game.round + 1} DE {game.totalRounds}</small>
@@ -215,7 +222,8 @@ export default function App() {
         </div>
       )}
 
-      <HostPanel game={game} onAction={action} onReset={reset} />
+      <HostPanel game={game} onAction={action} onReset={reset} onManage={() => setManagerOpen(true)} />
+      {managerOpen && <RoundManager onClose={() => setManagerOpen(false)} onChanged={load} />}
       {error && <div className="toast">{error}</div>}
     </main>
   )

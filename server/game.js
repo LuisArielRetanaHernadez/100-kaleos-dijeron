@@ -44,8 +44,8 @@ export const sections = [
   },
 ]
 
-function getQuestion(game) {
-  return sections[game.section].questions[game.round]
+function getQuestion(game, gameSections) {
+  return gameSections[game.section].questions[game.round]
 }
 
 export function createGame() {
@@ -66,9 +66,9 @@ export function createGame() {
   }
 }
 
-export function publicGame(game) {
-  const section = sections[game.section]
-  const question = getQuestion(game)
+export function publicGame(game, gameSections = sections) {
+  const section = gameSections[game.section]
+  const question = getQuestion(game, gameSections)
   return {
     ...game,
     question: question.question,
@@ -79,16 +79,16 @@ export function publicGame(game) {
     ),
     hostAnswers: question.answers,
     sectionTitle: section.title,
-    sections: sections.map(({ title, shortTitle, questions }) => ({ title, shortTitle, questionCount: questions.length })),
+    sections: gameSections.map(({ title, shortTitle, questions }) => ({ title, shortTitle, questionCount: questions.length })),
     totalRounds: section.questions.length,
-    totalSections: sections.length,
+    totalSections: gameSections.length,
     isLastQuestion: game.round === section.questions.length - 1,
-    isLastSection: game.section === sections.length - 1,
+    isLastSection: game.section === gameSections.length - 1,
   }
 }
 
-export function applyAction(game, action, payload = {}) {
-  const question = getQuestion(game)
+export function applyAction(game, action, payload = {}, gameSections = sections) {
+  const question = getQuestion(game, gameSections)
 
   if (action === 'reveal') {
     const index = Number(payload.index)
@@ -111,7 +111,7 @@ export function applyAction(game, action, payload = {}) {
     if ((index === 0 || index === 1) && name) game.teams[index].name = name
   } else if (action === 'select-section') {
     const section = Number(payload.section)
-    if (!Number.isInteger(section) || section < 0 || section >= sections.length) return game
+    if (!Number.isInteger(section) || section < 0 || section >= gameSections.length) return game
     game.section = section
     game.round = 0
     game.revealed = []
@@ -119,14 +119,14 @@ export function applyAction(game, action, payload = {}) {
     game.bank = 0
     game.status = 'playing'
   } else if (action === 'next-round') {
-    if (game.round < sections[game.section].questions.length - 1) {
+    if (game.round < gameSections[game.section].questions.length - 1) {
       game.round += 1
       game.revealed = []
       game.strikes = 0
       game.bank = 0
       game.activeTeam = game.activeTeam === 0 ? 1 : 0
       game.status = 'playing'
-    } else if (game.section < sections.length - 1) {
+    } else if (game.section < gameSections.length - 1) {
       game.section += 1
       game.round = 0
       game.revealed = []
