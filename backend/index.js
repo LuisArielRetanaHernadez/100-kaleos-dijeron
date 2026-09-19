@@ -17,7 +17,11 @@ let mutationQueue = Promise.resolve()
 let initialization
 
 app.use(express.json())
-app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }))
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+}))
 
 async function initialize() {
   if (!initialization) {

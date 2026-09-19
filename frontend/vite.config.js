@@ -9,7 +9,7 @@ export default defineConfig({
   root: frontendRoot,
   envDir: frontendRoot,
   build: {
-    outDir: path.resolve(frontendRoot, '../public'),
+    outDir: path.resolve(frontendRoot, 'dist'),
     emptyOutDir: true,
   },
   plugins: [react()],
