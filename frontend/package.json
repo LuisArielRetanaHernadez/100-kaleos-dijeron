@@ -1,0 +1,19 @@
+{
+  "name": "100-kaleos-dijeron-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config vite.config.js --host 0.0.0.0",
+    "build": "vite --config vite.config.js build",
+    "preview": "vite preview --config vite.config.js"
+  },
+  "dependencies": {
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest"
+  }
+}

@@ -1,4 +1,5 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
+import cors from 'cors'
 import express from 'express'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -6,6 +7,7 @@ import { applyAction, createGame, publicGame } from './game.js'
 import { createGameStore } from './game-store.js'
 
 const app = express()
+dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.env') })
 const port = process.env.PORT || 3001
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 let game = createGame()
@@ -15,6 +17,7 @@ let mutationQueue = Promise.resolve()
 let initialization
 
 app.use(express.json())
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }))
 
 async function initialize() {
   if (!initialization) {
@@ -34,6 +37,10 @@ app.use(async (_request, _response, next) => {
   } catch (error) {
     next(error)
   }
+})
+
+app.get('/api/health', (_request, response) => {
+  response.json({ ok: true })
 })
 
 function mutateGame(mutation) {

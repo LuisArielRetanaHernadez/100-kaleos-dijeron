@@ -5,20 +5,20 @@ import { applyAction, createGame, publicGame } from './game.js'
 test('oculta respuestas y suma al pozo solo al revelar por primera vez', () => {
   const game = createGame()
   assert.deepEqual(publicGame(game).answers[0], { index: 0 })
-  assert.deepEqual(publicGame(game).hostAnswers[0], { text: 'Música', points: 28 })
+  assert.deepEqual(publicGame(game).hostAnswers[0], { text: 'Pedro', points: 15 })
   applyAction(game, 'reveal', { index: 0 })
   applyAction(game, 'reveal', { index: 0 })
-  assert.equal(game.bank, 28)
-  assert.equal(publicGame(game).answers[0].text, 'Música')
+  assert.equal(game.bank, 15)
+  assert.equal(publicGame(game).answers[0].text, 'Pedro')
 })
 
 test('aplica el multiplicador de ronda y entrega los puntos al equipo activo', () => {
   const game = createGame()
   game.round = 2
   applyAction(game, 'reveal', { index: 0 })
-  assert.equal(game.bank, 64)
+  assert.equal(game.bank, 84)
   applyAction(game, 'award')
-  assert.equal(game.teams[0].score, 64)
+  assert.equal(game.teams[0].score, 84)
   assert.equal(game.bank, 0)
 })
 

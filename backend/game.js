@@ -44,6 +44,69 @@ export const sections = [
   },
 ]
 
+// Ronda 1 actualizada con el contenido proporcionado para "100 Mexicanos Cristianos Dijeron".
+sections[0] = {
+  title: 'Ronda 1: Cultura general cristiana',
+  shortTitle: 'Ronda 1 · Cultura cristiana',
+  questions: [
+    {
+      question: 'Menciona a uno de los 12 apóstoles de Jesús.',
+      multiplier: 1,
+      answers: [
+        { text: 'Pedro', points: 15 },
+        { text: 'Juan', points: 25 },
+        { text: 'Judas Iscariote', points: 15 },
+        { text: 'Tomás', points: 10 },
+        { text: 'Andrés', points: 5 },
+      ],
+    },
+    {
+      question: 'Nombra a un personaje bíblico que tuvo mucha paciencia (o que la necesitó).',
+      multiplier: 1,
+      answers: [
+        { text: 'Job', points: 45 },
+        { text: 'Noé', points: 25 },
+        { text: 'Abraham', points: 15 },
+        { text: 'José (el soñador)', points: 10 },
+        { text: 'Moisés', points: 5 },
+      ],
+    },
+    {
+      question: 'Menciona una plaga de Egipto que nadie querría vivir hoy en día.',
+      multiplier: 2,
+      answers: [
+        { text: 'Langostas o mosquitos', points: 42 },
+        { text: 'Conversión del agua en sangre', points: 28 },
+        { text: 'Ranas por todos lados', points: 15 },
+        { text: 'Oscuridad total', points: 10 },
+        { text: 'Úlceras en la piel', points: 5 },
+      ],
+    },
+    {
+      question: 'Di un milagro de Jesús que a los jóvenes les impresiona más.',
+      multiplier: 2,
+      answers: [
+        { text: 'Caminar sobre el agua', points: 38 },
+        { text: 'Resucitar a Lázaro', points: 27 },
+        { text: 'Multiplicar los panes y los peces', points: 20 },
+        { text: 'Convertir el agua en vino', points: 10 },
+        { text: 'Sanar a los ciegos', points: 5 },
+      ],
+    },
+    {
+      question: '¿Cuál es el versículo bíblico que casi todos los jóvenes se saben de memoria?',
+      multiplier: 3,
+      answers: [
+        { text: 'Juan 3:16 (Dios amó tanto al mundo...)', points: 48 },
+        { text: 'Salmo 23:1 (El Señor es mi pastor...)', points: 25 },
+        { text: 'Filipenses 4:13 (Todo lo puedo en Cristo...)', points: 15 },
+        { text: 'Génesis 1:1 (En el principio Dios...)', points: 8 },
+        { text: 'Josué 1:9 (Sé fuerte y valiente...)', points: 4 },
+      ],
+    },
+  ],
+}
+
 function getQuestion(game, gameSections) {
   return gameSections[game.section].questions[game.round]
 }

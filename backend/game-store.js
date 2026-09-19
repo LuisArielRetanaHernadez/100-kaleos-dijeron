@@ -39,6 +39,10 @@ export async function createGameStore(uri) {
       if (!documents.length) {
         await rounds.insertMany(defaultSections.map((round, order) => ({ ...round, order })))
         documents = await rounds.find().sort({ order: 1 }).toArray()
+      } else if (documents[0]?.order === 0 && documents[0].title === 'Ronda 1: Fiesta y vida cotidiana') {
+        // Migra la ronda inicial existente para que las instalaciones previas reciban la nueva ronda 1.
+        await rounds.updateOne({ _id: documents[0]._id }, { $set: { ...defaultSections[0], order: 0 } })
+        documents = await rounds.find().sort({ order: 1 }).toArray()
       }
       return documents.map(serializeRound)
     },

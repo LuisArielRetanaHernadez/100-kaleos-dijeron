@@ -8,6 +8,8 @@
 
 No subas `.env` al repositorio. Si MongoDB Atlas restringe las IP de acceso, agrega las IP permitidas para que Vercel pueda conectarse.
 
+La cadena de MongoDB debe configurarse en Vercel desde **Settings → Environment Variables**, no dentro de `vercel.json`.
+
 Para probar localmente el mismo modo de producción:
 
 ```bash

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { API_URL } from './services/api.js'
 
 const emptyRound = () => ({
   title: 'Nueva ronda',
@@ -11,7 +12,7 @@ const emptyRound = () => ({
 })
 
 async function request(url, options) {
-  const response = await fetch(url, options)
+  const response = await fetch(`${API_URL}${url}`, options)
   const data = response.status === 204 ? null : await response.json()
   if (!response.ok) throw new Error(data?.error || 'No se pudo completar la operación.')
   return data

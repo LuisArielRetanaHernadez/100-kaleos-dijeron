@@ -4,21 +4,12 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:client": "vite --config frontend/vite.config.js --host 0.0.0.0",
-    "dev:server": "node --watch backend/index.js",
-    "build": "vite --config frontend/vite.config.js build",
-    "start": "NODE_ENV=production node backend/index.js",
-    "test": "node --test backend/game.test.js"
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix backend run start",
+    "test": "npm --prefix backend run test"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "latest",
-    "concurrently": "latest",
-    "dotenv": "^18.0.1",
-    "express": "latest",
-    "mongodb": "^7.6.0",
-    "react": "latest",
-    "react-dom": "latest",
-    "vite": "latest"
+    "concurrently": "latest"
   }
 }
