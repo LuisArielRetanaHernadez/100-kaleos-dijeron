@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:client": "vite --host 0.0.0.0",
-    "dev:server": "node --watch server/index.js",
-    "build": "vite build",
-    "start": "NODE_ENV=production node server/index.js",
-    "test": "node --test"
+    "dev:client": "vite --config frontend/vite.config.js --host 0.0.0.0",
+    "dev:server": "node --watch backend/index.js",
+    "build": "vite --config frontend/vite.config.js build",
+    "start": "NODE_ENV=production node backend/index.js",
+    "test": "node --test backend/game.test.js"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

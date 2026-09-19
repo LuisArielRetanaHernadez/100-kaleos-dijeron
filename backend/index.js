@@ -12,8 +12,29 @@ let game = createGame()
 let gameSections = []
 let store
 let mutationQueue = Promise.resolve()
+let initialization
 
 app.use(express.json())
+
+async function initialize() {
+  if (!initialization) {
+    initialization = (async () => {
+      store = await createGameStore(process.env.MONGODB_URI)
+      game = await store.load()
+      await reloadRounds()
+    })()
+  }
+  return initialization
+}
+
+app.use(async (_request, _response, next) => {
+  try {
+    await initialize()
+    next()
+  } catch (error) {
+    next(error)
+  }
+})
 
 function mutateGame(mutation) {
   const operation = mutationQueue.then(mutation)
@@ -106,9 +127,9 @@ app.delete('/api/rounds/:id', async (request, response) => {
   response.status(204).end()
 })
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(root, 'dist')))
-  app.use((_request, response) => response.sendFile(path.join(root, 'dist', 'index.html')))
+if (process.env.NODE_ENV === 'production' && !process.env.VERCEL) {
+  app.use(express.static(path.join(root, 'public')))
+  app.use((_request, response) => response.sendFile(path.join(root, 'public', 'index.html')))
 }
 
 app.use((error, _request, response, _next) => {
@@ -117,15 +138,18 @@ app.use((error, _request, response, _next) => {
 })
 
 async function start() {
-  store = await createGameStore(process.env.MONGODB_URI)
-  game = await store.load()
-  await reloadRounds()
+  await initialize()
   app.listen(port, () => {
     console.log(`Servidor listo en el puerto ${port} con MongoDB conectado`)
   })
 }
 
-start().catch((error) => {
-  console.error(`No se pudo iniciar el servidor: ${error.message}`)
-  process.exit(1)
-})
+export { app, initialize }
+export default app
+
+if (!process.env.VERCEL) {
+  start().catch((error) => {
+    console.error(`No se pudo iniciar el servidor: ${error.message}`)
+    process.exit(1)
+  })
+}

@@ -1,15 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import RoundManager from './RoundManager.jsx'
-
-const api = {
-  get: () => fetch('/api/game').then((response) => response.json()),
-  action: (action, payload = {}) => fetch('/api/game/action', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action, ...payload }),
-  }).then((response) => response.json()),
-  reset: () => fetch('/api/game/reset', { method: 'POST' }).then((response) => response.json()),
-}
+import { api } from './services/api.js'
 
 function useSounds() {
   const context = useRef(null)
